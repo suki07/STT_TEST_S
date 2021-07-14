@@ -38,6 +38,15 @@ class Audio2TextView(viewsets.ModelViewSet):
         if request.method == 'POST':
             serializer.is_valid(raise_exception=True)
             self.perform_create(serializer)
+            print("여기여기")
+            graph = type(serializer.data.get('text'))
+            graphemes = g2p_views.runKoG2P(graph, 'rulebook.txt')
+            print(graphemes)
+            
+            # g2p로 연결 하고
+            # g2p에 맞는 이미지를 사용하기
+            serializer2 = self.get_serializer(data=graphemes)
+            self.perform_create(serializer2)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
             # is_text_include = type(serializer.data.get('text'))
             # text(serializer.data.get('text'))
