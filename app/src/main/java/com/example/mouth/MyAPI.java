@@ -12,21 +12,21 @@ import retrofit2.http.Path;
 
 public interface MyAPI{
 
-    public static final String API_URL = "https://c4d547b34c9b.ngrok.io/"
+    public static final String API_URL = "http://9409cc326937.ngrok.io/";
 
     @POST("/catalog/posts/")
-    Call<PostItem> post_posts(@Body PostItem post);
+    Call<ResponseItem> post_posts(@Body PostItem data);
 
     @PATCH("/catalog/posts/{pk}/")
-    Call<PostItem> patch_posts(@Path("pk") int pk, @Body PostItem post);
+    Call<ResponseItem> patch_posts(@Path("pk") int pk, @Body PostItem post);
 
     @DELETE("/catalog/posts/{pk}/")
-    Call<PostItem> delete_posts(@Path("pk") int pk);
+    Call<ResponseItem> delete_posts(@Path("pk") int pk);
 
     @GET("/catalog/posts/")
-    Call<List<PostItem>> get_posts();
+    Call<List<ResponseItem>> get_posts();
 
     @GET("/catalog/posts/{pk}/")
-    Call<PostItem> get_post_pk(@Path("pk") int pk);
+    Call<ResponseItem> get_post_pk(@Path("pk") int pk);
 
 }
