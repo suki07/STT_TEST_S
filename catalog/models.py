@@ -14,7 +14,7 @@ class Audio2Text(models.Model):
     # mouth_gif = models.TextField()  # models.ImageField(blank=True)  # 구글 ㅋ를라우드 -> # url
 
     def __str__(self):
-        return self.user.username   # + ',' + str(self.created_at)
+        return self.user.username + ',' + str(self.created_at) + str(self.text)
 
     # def get_absolute_url(self):
     #     return reverse('mouth', args=[str(self.id)])

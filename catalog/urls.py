@@ -1,7 +1,9 @@
 from django.urls import path, include
-from .views import hello_world, post_mouth
-from .views import SpeechAnimationView, Audio2TextView
+from .views import base_views, g2p_views
+from .views.base_views import SpeechAnimationView, Audio2TextView
 from rest_framework.urlpatterns import format_suffix_patterns
+
+from .views import base_views, g2p_views
 
 get_list = SpeechAnimationView.as_view({
     'post': 'create',
@@ -33,6 +35,6 @@ urlpatterns = format_suffix_patterns([
     path('gets/<int:pk>', get_detail, name='get_detail'),
     path('posts/', post_list, name='post_list'),
     path('posts/<int:pk>', post_detail, name='post_detail'),
-    path('', hello_world, name='hello_world'),
-    path('mouth/', post_mouth, name='mouth'),
+    path('', base_views.hello_world, name='hello_world'),
+    path('mouth/', base_views.post_mouth, name='mouth'),
 ])

@@ -1,17 +1,22 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Audio2Text, SpeechAnimation
+from ..models import Audio2Text, SpeechAnimation
 from rest_framework import viewsets
 from rest_framework import permissions
-from .serializers import SpeechAnimation_Serializer
-from .serializers import Audio2Text_Serializer
-
+from ..serializers import SpeechAnimation_Serializer
+from ..serializers import Audio2Text_Serializer
+from . import g2p_views
 
 class SpeechAnimationView(viewsets.ModelViewSet):
     queryset = SpeechAnimation.objects.all()
     serializer_class = SpeechAnimation_Serializer
     permission_classes = (permissions.IsAuthenticated,)
-
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        is_text_include = (serializer.data.get('text'))
+        
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
