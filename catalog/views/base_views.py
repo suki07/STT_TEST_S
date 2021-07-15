@@ -9,6 +9,9 @@ from ..serializers import SpeechAnimation_Serializer
 from ..serializers import Audio2Text_Serializer
 from . import g2p_views
 
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
 class SpeechAnimationView(viewsets.ModelViewSet):
     queryset = SpeechAnimation.objects.all()
     serializer_class = SpeechAnimation_Serializer
@@ -32,6 +35,10 @@ class Audio2TextView(viewsets.ModelViewSet):
     queryset = Audio2Text.objects.all()
     serializer_class = Audio2Text_Serializer
     permission_classes = (permissions.IsAuthenticated,)
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(Audio2TextView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
