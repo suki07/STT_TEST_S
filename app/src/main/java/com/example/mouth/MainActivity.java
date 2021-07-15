@@ -163,6 +163,7 @@ import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -173,6 +174,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 
 
 
@@ -192,6 +194,9 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        // ImageView imgGIF = (ImageView)findViewById(R.id.gif_image);
 
         // 안드로이드 6.0버전 이상인지 체크해서 퍼미션 체크
         if(Build.VERSION.SDK_INT >= 23){
@@ -331,6 +336,8 @@ public class MainActivity extends AppCompatActivity {
             for(int i = 0; i < matches.size() ; i++){
                 textView.setText(matches.get(i));
                 Log.d(TAG, "POST");
+                Log.d(TAG, matches.get(i));
+
                 PostItem item = new PostItem();
                 item.setText(matches.get(i));
                 Call<PostItem> postCall = mMyAPI.post_posts(item);
@@ -339,6 +346,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<PostItem> call, Response<PostItem> response){
                     if(response.isSuccessful()){
                         Log.d(TAG, "등록 완료");
+                        Log.d(TAG, item.getText());
+
                     }else {
                         Log.d(TAG, "Status Code : " + response.code());
                         Log.d(TAG, response.errorBody().toString());
