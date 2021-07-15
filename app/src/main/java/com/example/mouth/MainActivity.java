@@ -219,26 +219,26 @@ public class MainActivity extends AppCompatActivity {
 
         initMyAPI(mMyAPI.API_URL);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://0116515cbeb3.ngrok.io/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        MyAPI MyAPI = retrofit.create(MyAPI.class);
-        MyAPI.getData(text:"가").enqueue(new Callback<List<ResponseItem>>(){
-            @Override
-            public void onResponse(@NonNull Call<List<ResponseItem>> call, @NonNull Response<List<ResponseItem>> response){
-                if(response.isSuccessful()){
-                    List<ResponseItem> data = response.body();
-                    Log.d(data.getData());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ResponseItem>> call, Throwable t){
-                t.printStackTrace();
-            }
-        });
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl("http://0116515cbeb3.ngrok.io/")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        MyAPI MyAPI = retrofit.create(MyAPI.class);
+//        MyAPI.getData(text:"가").enqueue(new Callback<List<ResponseItem>>(){
+//            @Override
+//            public void onResponse(@NonNull Call<List<ResponseItem>> call, @NonNull Response<List<ResponseItem>> response){
+//                if(response.isSuccessful()){
+//                    List<ResponseItem> data = response.body();
+//                    Log.d(data.getData());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<ResponseItem>> call, Throwable t){
+//                t.printStackTrace();
+//            }
+//        });
 
     }
 

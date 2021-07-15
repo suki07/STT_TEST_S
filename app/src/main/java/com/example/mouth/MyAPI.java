@@ -47,7 +47,7 @@ import retrofit2.http.Query;
 
 public interface MyAPI{
 
-    public static final String API_URL = "https://0482eb5dad1d.ngrok.io/";
+    public static final String API_URL = "https://a21a8190fda5.ngrok.io/";
 
     @POST("/catalog/posts/")
     Call<PostItem> post_posts(@Body PostItem post);
