@@ -2,8 +2,11 @@ from django.urls import path, include
 from .views import base_views, g2p_views
 from .views.base_views import SpeechAnimationView, Audio2TextView
 from rest_framework.urlpatterns import format_suffix_patterns
-
+from rest_framework import routers
 from .views import base_views, g2p_views
+
+# router = routers.DefaultRouter()
+# router.register(r'tests', Audio2TextView)
 
 get_list = SpeechAnimationView.as_view({
     'post': 'create',

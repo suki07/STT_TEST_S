@@ -15,17 +15,18 @@ class SpeechAnimation_Serializer(serializers.ModelSerializer):
     class Meta:
         model = SpeechAnimation
         fields = '__all__'
-        read_only_fields = ('text','mouth_gif')
+        read_only_fields = ('text', 'mouth_gif')
 
 
 class Audio2Text_Serializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+    # user = UserSerializer(read_only=True)
 
     class Meta:
         model = Audio2Text
-        fields = (
-            'user',
-            'text',
-            'created_at',
-                  )
+        fields = ['text', 'created_at'] # '__all__'
+        # fields = (
+        #     # 'user',
+        #     'text',
+        #     # 'created_at',
+        #           )
         read_only_fields = ('created_at',)
