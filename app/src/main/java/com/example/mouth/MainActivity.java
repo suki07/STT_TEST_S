@@ -177,7 +177,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 
-
 public class MainActivity extends AppCompatActivity {
 
     private final  String TAG = getClass().getSimpleName();
@@ -188,6 +187,26 @@ public class MainActivity extends AppCompatActivity {
     Intent intent;
     SpeechRecognizer mRecognizer;
     final int PERMISSION = 1;
+
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//        Log.d("ACTIVITY_LC", "onCreate 호출됨");
+//        Toast.makeText(getApplicationContext(), "onCreate 호출됨", Toast.LENGTH_SHORT).show();
+//
+//        Button button = (Button) findViewById(R.id.sttStart);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), SubActivity.class);
+//                startActivity(intent);
+//
+//            }
+//        });
+//
+//    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,9 +235,15 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // 추가한 부분 SubActivity.class 실행
+
+                Intent intent = new Intent(this,SubActivity.class);
+                startActivity(intent);
+
                 mRecognizer = SpeechRecognizer.createSpeechRecognizer(MainActivity.this); // 새 SpeechRecognizer 를 만드는 팩토리 메서드
                 mRecognizer.setRecognitionListener(listener); // 리스너 설정
-                mRecognizer.startListening(intent); // 듣기 시작
+                //mRecognizer.startListening(intent); // 듣기 시작
             }
         });
 
