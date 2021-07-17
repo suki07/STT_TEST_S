@@ -10,12 +10,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class SpeechAnimation_Serializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+    # user = UserSerializer(read_only=True)
 
     class Meta:
         model = SpeechAnimation
         fields = '__all__'
-        read_only_fields = ('text', 'mouth_gif')
+        read_only_fields = ('text', 'graphme', 'mouth_gif',)
 
 
 class Audio2Text_Serializer(serializers.ModelSerializer):

@@ -17,27 +17,42 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+
+def detail(request, context):
+    return render(request, 'post_list.html', context)
+
+
 class SpeechAnimationView(viewsets.ModelViewSet):
     queryset = SpeechAnimation.objects.all()
     serializer_class = SpeechAnimation_Serializer
     permission_classes = [AllowAny]
+    print("헤이힝[")
+    def get(self, request, **kwargs):
+        # 가장 최근에 추가된 스피치 텍스트 가져오기
+        # speech_text = Audio2Text.objects.orderby('created_at').first()
+        # text = speech_text.text  # graphme으로 바꾸기
+        # print(text)
+        # gif url 가져오기
+        # context = self.analyze_graphmes(text)  # type(serializer.data.get('text'))
+        serializer = SpeechAnimation_Serializer(self.queryset, many=True) # self.get_serializer(context, many=True)
 
-    # def get(self, request, *args, **kwargs):
-    #     serializer = self.get_serializer(data=request.data)
-    #     if request.method == 'POST':
-    #         serializer.is_valid(raise_exception=True)
-    #         self.perform_create(serializer)
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #         # is_text_include = type(serializer.data.get('text'))
-    #         # text(serializer.data.get('text'))
-    #     return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        if request.method == 'GET':
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)  # redirect('detail', context)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def analyze_graphmes(self, text):  # 음소 추출
+        graphemes = g2p_views.runKoG2P(text, 'rulebook.txt')
+        # 추후 진행상황에 따라 음소 별로 나누는 작업 필요: 현재는 시나리오에 완벽히 맞게 하고 있음.
+        mouth = self.queryset.filter(text=text)   # graphme 으로 바꾸기
+        print(mouth)
+        # context = {
+        #     "mouth_gif": mouth.mouth_gif,
+        #     "text": mouth.text
+        # }
+        print(graphemes)
+        return mouth
 
 
-import logging
-import os
 # @method_decorator(csrf_exempt, name='dispatch')
 class Audio2TextView(viewsets.ModelViewSet):
     queryset = Audio2Text.objects.all()
@@ -52,42 +67,8 @@ class Audio2TextView(viewsets.ModelViewSet):
             print("아??")
             if serializer.is_valid():  # fields = '__all__'
                 serializer.save()
-
-                context = self.analyze_graphmes(request.POST['text'])  # type(serializer.data.get('text'))
-                Response(serializer.data, status=status.HTTP_201_CREATED)
-                print("안녕")
-                print(context['mouth_gif'])
-                return redirect('detail', context)
-                    # render(request, "post_list.html", context=context)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-
-    def analyze_graphmes(self, text):  # 음소 추출
-        graphemes = g2p_views.runKoG2P(text, 'rulebook.txt')
-
-        # 추후 진행상황에 따라 음소 별로 나누는 작업 필요: 현재는 시나리오에 완벽히 맞게 하고 있음.
-        mouth = SpeechAnimation.objects.filter(text=text).get()
-        context = {
-            "mouth_gif": mouth.mouth_gif,
-            "text": mouth.text
-        }
-        print(graphemes)
-        return context
-
-
-def detail(request, context):  #views.pk 변수명과 urls.pk 변수명이 같아야함.
-    return render(request, 'post_list.html', context)
-
-# print("여기여기")
-            # graph = type(serializer.data.get('text'))
-            # graphemes = g2p_views.runKoG2P(graph, 'rulebook.txt')
-            # print(graphemes)
-            #
-            # g2p로 연결 하고
-            # g2p에 맞는 이미지를 사용하기
-            # serializer2 = self.get_serializer(data=graphemes)
-            # self.perform_create(serializer2)# is_text_include = type(serializer.data.get('text'))
-#             # text(serializer.data.get('text'))
-#             # render(request, "post_list.html", context=context)
 
 
 # Create your views here.
@@ -97,6 +78,16 @@ def hello_world(request):
                        "Hello Byte!"
                        "</h1>"
    )
+
+
+def post_mouth(request):
+
+    mouth = SpeechAnimation.objects.filter(text='가').get()  # 이 '가'를 string 변수로? '안녕'
+    context = {
+        "mouth_gif": mouth.mouth_gif,
+        "text": mouth.text,
+    }
+    return render(request, "post_list.html", context=context)
 
 #
 # def post_mouth(request):
@@ -112,11 +103,3 @@ def hello_world(request):
 #         return render(request, "post_list.html", context=context)
 #
 
-def post_mouth(request):
-
-    mouth = SpeechAnimation.objects.filter(text='가').get()  # 이 '가'를 string 변수로? '안녕'
-    context = {
-        "mouth_gif": mouth.mouth_gif,
-        "text": mouth.text,
-    }
-    return render(request, "post_list.html", context=context)

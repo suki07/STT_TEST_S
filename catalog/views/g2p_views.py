@@ -307,6 +307,7 @@ def runKoG2P(graph, rulebook):
         prono = graph2prono(graph, rule_in, rule_out)
 
     print(prono)
+    print(type(prono))
     return prono
 
 
